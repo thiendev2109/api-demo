@@ -1,5 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { swaggerUIStyles } from '../utils/constants';
 
 export const swaggerDocument = (app: INestApplication) => {
   const swaggerConfig = new DocumentBuilder()
@@ -13,5 +14,6 @@ export const swaggerDocument = (app: INestApplication) => {
   SwaggerModule.setup('/docs', app, document, {
     useGlobalPrefix: false,
     jsonDocumentUrl: '/docs/json',
+    ...swaggerUIStyles,
   });
 };
