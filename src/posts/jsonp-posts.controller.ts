@@ -8,21 +8,21 @@ export class JsonpPostsController {
 
   @Get()
   async getPosts(
-    @Query('callback') callback: string,
     @Res() res: Response,
+    @Query('callback') callback?: string,
   ) {
     try {
       const posts = await this.postsService.findAll();
-      const jsonResponse = JSON.stringify(posts);
       
+      // If no callback provided, return regular JSON
       if (!callback) {
         return res.json(posts);
       }
 
-      // Sanitize callback name to prevent XSS
+      // If callback provided, return JSONP
       const sanitizedCallback = callback.replace(/[^a-zA-Z0-9_]/g, '');
       res.setHeader('Content-Type', 'application/javascript');
-      return res.send(`${sanitizedCallback}(${jsonResponse});`);
+      return res.send(`${sanitizedCallback}(${JSON.stringify(posts)});`);
     } catch (error) {
       if (!callback) {
         return res.status(500).json({ error: 'Internal server error' });
