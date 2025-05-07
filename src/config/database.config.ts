@@ -8,7 +8,9 @@ export const AppDataSource = new DataSource({
   username: config.DATABASE_USERNAME,
   password: config.DATABASE_PASSWORD,
   database: config.DATABASE_NAME,
-  ssl: config.DATABASE_SSL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: config.NODE_ENV !== 'production',
   logging: config.NODE_ENV === 'development',
