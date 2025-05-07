@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { User } from './entities/user.entity';
+import { UserResponseDto, UsersResponseDto } from './dto/user.response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -16,19 +16,20 @@ export class UsersController {
   @ApiResponse({ 
     status: 201, 
     description: 'User successfully created.',
-    type: User
+    type: UserResponseDto
   })
   @ApiResponse({ status: 400, description: 'Bad request.' })
   @ApiResponse({
     status: 409,
     description: 'Email already exists.',
   })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(
+  async create(@Body() createUserDto: CreateUserDto) {
+    const user = await this.usersService.create(
       createUserDto.email,
       createUserDto.password,
       createUserDto.name,
     );
+    return new UserResponseDto(user);
   }
 
   @Get()
@@ -38,10 +39,11 @@ export class UsersController {
   @ApiResponse({ 
     status: 200, 
     description: 'Return all users.',
-    type: [User]
+    type: UsersResponseDto
   })
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    const users = await this.usersService.findAll();
+    return new UsersResponseDto(users);
   }
 
   @Get('profile')
@@ -51,10 +53,11 @@ export class UsersController {
   @ApiResponse({ 
     status: 200, 
     description: 'Return the current user profile.',
-    type: User
+    type: UserResponseDto
   })
-  getProfile(@Request() req) {
-    return this.usersService.findById(req.user.sub);
+  async getProfile(@Request() req) {
+    const user = await this.usersService.findById(req.user.sub);
+    return new UserResponseDto(user);
   }
 
   @Get(':id')
@@ -64,11 +67,12 @@ export class UsersController {
   @ApiResponse({ 
     status: 200, 
     description: 'Return the user.',
-    type: User
+    type: UserResponseDto
   })
   @ApiResponse({ status: 404, description: 'User not found.' })
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const user = await this.usersService.findOne(id);
+    return new UserResponseDto(user);
   }
 
   @Patch(':id')
@@ -78,11 +82,12 @@ export class UsersController {
   @ApiResponse({ 
     status: 200, 
     description: 'User successfully updated.',
-    type: User
+    type: UserResponseDto
   })
   @ApiResponse({ status: 404, description: 'User not found.' })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const user = await this.usersService.update(id, updateUserDto);
+    return new UserResponseDto(user);
   }
 
   @Delete(':id')
