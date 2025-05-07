@@ -3,8 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export const swaggerDocument = (app: INestApplication) => {
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('SThien Portfolio')
-    .setDescription('The portfolio api')
+    .setTitle('Blog API')
+    .setDescription('The blog api')
     .setVersion('0.0.1')
     .addBearerAuth()
     .build();

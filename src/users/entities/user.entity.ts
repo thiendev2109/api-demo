@@ -11,9 +11,9 @@ import { Post } from '../../posts/entities/post.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   @ApiProperty({ description: 'The unique identifier of the user' })
-  id: number;
+  id: string;
 
   @Column({ unique: true })
   @ApiProperty({
@@ -25,12 +25,12 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
+  @Column()
   @ApiProperty({
     description: 'The full name of the user',
     example: 'John Doe',
   })
-  fullName: string;
+  name: string;
 
   @OneToMany(() => Post, (post) => post.author)
   @ApiProperty({

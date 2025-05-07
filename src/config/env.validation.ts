@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, IsInt, IsBoolean, IsEnum } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
+import 'dotenv/config';
 
 enum Environment {
   Development = 'development',
