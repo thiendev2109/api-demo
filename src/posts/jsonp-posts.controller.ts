@@ -1,12 +1,19 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { PostsService } from './posts.service';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('JSONP Posts')
 @Controller('jsonp/posts')
 export class JsonpPostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
+  @ApiQuery({ 
+    name: 'callback', 
+    required: false,
+    description: 'Optional callback function name for JSONP response'
+  })
   async getPosts(
     @Res() res: Response,
     @Query('callback') callback?: string,
