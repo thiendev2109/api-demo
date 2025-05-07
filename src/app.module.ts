@@ -7,6 +7,7 @@ import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { SeedsModule } from './database/seeds/seeds.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AppService } from './app.service';
     UsersModule,
     PostsModule,
     AuthModule,
+    SeedsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
   ssl: {
     rejectUnauthorized: false,
   },
-  entities: ['dist/**/*.entity{.ts,.js}'],
+  entities: ['dist/**/*.entity{.ts,.js}', __dirname + '/../**/*.entity{.ts,.js}'],
   synchronize: config.NODE_ENV !== 'production',
   logging: config.NODE_ENV === 'development',
-}); 
+});
