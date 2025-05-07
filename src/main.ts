@@ -1,32 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { swaggerDocument } from './config/swagger';
+import { config } from './config/env.validation';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Enable CORS
-  app.enableCors();
-
-  // Enable validation
+  app.enableCors({
+    credentials: true,
+    origin: true,
+  });
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
     }),
   );
+  // Open API
+  swaggerDocument(app);
 
-  // Swagger configuration
-  const config = new DocumentBuilder()
-    .setTitle('Blog API')
-    .setDescription('The Blog API description')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-
-  await app.listen(process.env.PORT ?? 3000);
+  const port = config.PORT || 3000;
+  await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}`);
 }
 bootstrap();
