@@ -56,7 +56,7 @@ export class UsersController {
     type: UserResponseDto
   })
   async getProfile(@Request() req) {
-    const user = await this.usersService.findById(req.user.sub);
+    const user = await this.usersService.findById(req.user.userId);
     return new UserResponseDto(user);
   }
 
